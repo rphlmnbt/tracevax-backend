@@ -21,8 +21,20 @@ app.get("/", (req, res) => {
   res.json({ message: "TRACEVAX" });
 });
 
+// import models
 const db = require("./app/models");
+
+// sync database
 db.sequelize.sync();
+
+// drop and resync
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync Db');
+// });
+
+// routes
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

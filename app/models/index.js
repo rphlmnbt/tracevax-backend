@@ -19,4 +19,18 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+db.credentials = require("./credentials.model.js")(sequelize, Sequelize);
+db.details = require("./details.model.js")(sequelize, Sequelize);
+
+db.credentials.hasOne(db.details, {
+  foreignKey: {
+    name: 'uuid_creds'
+  }
+});
+db.details.belongsTo(db.credentials, {
+  foreignKey: {
+    name: 'uuid_creds'
+  }
+});
+
 module.exports = db;
