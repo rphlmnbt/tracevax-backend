@@ -1,0 +1,17 @@
+SIGNUP
+{
+    "email" : "sample@email.com",
+    "password" : "sample",
+    "first_name" : "fName",
+    "last_name" : "lName",
+    "contact_number" : "0000",
+    "gender" : "male",
+    "civil_status" : "its complicated",
+    "birth_date" : "jan 1, 0000",
+    "home_address" : "krusty krab"
+}
+LOGIN
+{
+	"email" : "sample@email.com",
+    "password" : "sample"
+}
