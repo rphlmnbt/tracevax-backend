@@ -71,7 +71,7 @@ exports.delete = (req, res) => {
       where: { uuid_creds: uuid_creds }
     })
       .then(num => {
-        if (num == 1) {
+        if (num === 1) {
           res.send({
             message: "User were deleted successfully!"
           });
