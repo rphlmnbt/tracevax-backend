@@ -25,18 +25,19 @@ app.get("/", (req, res) => {
 const db = require("./app/models");
 
 // sync database
-db.sequelize.sync();
+// db.sequelize.sync();
 
 // drop and resync
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Db');
-// });
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Db');
+});
 
 // routes
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/credentials.routes')(app);
 require('./app/routes/details.routes')(app);
+require('./app/routes/logs.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
