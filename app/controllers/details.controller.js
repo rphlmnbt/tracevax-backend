@@ -4,8 +4,8 @@ const Op = db.Sequelize.Op;
 
 // Retrieve all User's Details from the database.
 exports.findAll = (req, res) => {
-    const uuid_details = req.query.uuid_details;
-    var condition = uuid_details ? { uuid_details: { [Op.like]: `%${uuid_details}%` } } : null;
+    const {uuid_details} = req.query;
+    const condition = uuid_details ? { uuid_details: { [Op.like]: `%${uuid_details}%` } } : null;
   
     Details.findAll({ where: condition })
       .then(data => {
@@ -21,7 +21,7 @@ exports.findAll = (req, res) => {
 
 // Find a single User's Details with an uuid
 exports.findOne = (req, res) => {
-    const uuid_details = req.params.uuid_details;
+    const {uuid_details} = req.params;
   
     Details.findByPk(uuid_details)
       .then(data => {
@@ -36,13 +36,13 @@ exports.findOne = (req, res) => {
 
 // Update a User's Details by the uuid in the request
 exports.update = (req, res) => {
-    const uuid_details = req.params.uuid_details;
+    const {uuid_details} = req.params;
   
     Details.update(req.body, {
       where: { uuid_details: uuid_details}
     })
       .then(num => {
-        if (num == 1) {
+        if (num === 1) {
           res.send({
             message: "User's Details were updated successfully."
           });
@@ -61,13 +61,13 @@ exports.update = (req, res) => {
 
 // Delete a User's Details with the specified uuid_details in the request
 exports.delete = (req, res) => {
-    const uuid_details = req.params.uuid_details;
+    const {uuid_details} = req.params;
   
     Details.destroy({
       where: { uuid_details: uuid_details }
     })
       .then(num => {
-        if (num == 1) {
+        if (num === 1) {
           res.send({
             message: "User's Details were deleted successfully!"
           });
