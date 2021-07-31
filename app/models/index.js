@@ -21,6 +21,7 @@ db.sequelize = sequelize;
 
 db.credentials = require("./credentials.model.js")(sequelize, Sequelize);
 db.details = require("./details.model.js")(sequelize, Sequelize);
+db.logs = require("./logs.model.js")(sequelize, Sequelize);
 
 db.credentials.hasOne(db.details, {
   foreignKey: {
