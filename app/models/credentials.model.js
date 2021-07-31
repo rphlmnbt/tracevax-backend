@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Credentials = sequelize.define("credentials", {
+    const Credentials = sequelize.define("users", {
         uuid_creds: {
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV1,
