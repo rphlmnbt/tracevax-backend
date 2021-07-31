@@ -5,8 +5,8 @@ var bcrypt = require("bcryptjs");
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-    const uuid_creds = req.query.uuid_creds;
-    var condition = uuid_creds ? { uuid_creds: { [Op.like]: `%${uuid_creds}%` } } : null;
+    const {uuid_creds} = req.query;
+    const condition = uuid_creds ? { uuid_creds: { [Op.like]: `%${uuid_creds}%` } } : null;
   
     Credentials.findAll({ where: condition })
       .then(data => {
@@ -22,7 +22,7 @@ exports.findAll = (req, res) => {
 
 // Find a single User with an uuid
 exports.findOne = (req, res) => {
-    const uuid_creds = req.params.uuid_creds;
+    const {uuid_creds} = req.params;
   
     Credentials.findByPk(uuid_creds)
       .then(data => {
@@ -37,7 +37,7 @@ exports.findOne = (req, res) => {
 
 // Update a User by the uuid in the request
 exports.update = (req, res) => {
-    const uuid_creds = req.params.uuid_creds;
+    const {uuid_creds} = req.params;
     if (req.body.password) {
       req.body.password = bcrypt.hashSync(req.body.password, 8)
     }
@@ -46,7 +46,7 @@ exports.update = (req, res) => {
       where: { uuid_creds: uuid_creds }
     })
       .then(num => {
-        if (num == 1) {
+        if (num === 1) {
           res.send({
             message: "User was updated successfully."
           });
@@ -65,7 +65,7 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified uuid_creds in the request
 exports.delete = (req, res) => {
-    const uuid_creds = req.params.uuid_creds;
+    const {uuid_creds} = req.params;
   
     Credentials.destroy({
       where: { uuid_creds: uuid_creds }
