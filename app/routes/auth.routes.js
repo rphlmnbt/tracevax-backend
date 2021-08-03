@@ -17,6 +17,6 @@ module.exports = function(app) {
     ],
     controller.signup
   );
-
+  app.put("/api/auth/update/:uuid_creds", controller.update);
   app.post("/api/auth/signin", controller.signin);
 };
