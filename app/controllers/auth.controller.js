@@ -7,6 +7,7 @@ const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { credentials } = require("../models");
 
 exports.signup = (req, res) => {
     // Save User to Database
@@ -30,6 +31,30 @@ exports.signup = (req, res) => {
         res.status(500).send({ message: err.message });
     });
 };
+
+exports.update = (req, res) => {
+  const {uuid_creds} = req.params;
+  if (req.body.password) {
+    req.body.password = bcrypt.hashSync(req.body.password, 8)
+  }
+  Credentials.update(req.body, {
+    where: { uuid_creds: uuid_creds }
+  }).then(credentials => {
+    Details.update(req.body, {
+      where: { uuid_creds: uuid_creds}
+    })
+  })
+    .then(() => {
+      res.send({
+        message: "User was updated successfully."
+      });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating User with uuid=" + uuid_creds
+      });
+    });
+}
 
 exports.signin = (req, res) => {
   Credentials.findOne({
@@ -68,3 +93,4 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
