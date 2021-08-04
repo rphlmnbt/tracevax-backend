@@ -22,6 +22,8 @@ db.sequelize = sequelize;
 db.credentials = require("./credentials.model.js")(sequelize, Sequelize);
 db.details = require("./details.model.js")(sequelize, Sequelize);
 db.logs = require("./logs.model.js")(sequelize, Sequelize);
+db.vaccinecard = require("./vaccinecard.model.js")(sequelize, Sequelize);
+db.id = require("./id.model.js")(sequelize, Sequelize);
 
 db.credentials.hasOne(db.details, {
   foreignKey: {
@@ -33,5 +35,16 @@ db.details.belongsTo(db.credentials, {
     name: 'uuid_creds'
   }
 });
+
+db.id.hasOne(db.vaccinecard, {
+  foreignKey: {
+    name: 'id_IDCard'
+  }
+})
+db.vaccinecard.belongsTo(db.id, {
+  foreignKey: {
+    name: 'id_IDCard'
+  }
+})
 
 module.exports = db;
