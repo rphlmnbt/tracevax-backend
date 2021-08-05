@@ -89,43 +89,50 @@ exports.update = (req, res) => {
 
 // Delete a Log Entry with the specified uuid_creds in the request
 exports.delete = (req, res) => {
-    const {uuid_creds} = req.params;
-  
-    Logs.destroy({
-      where: { uuid_creds: uuid_creds }
-    })
-      .then(num => {
-        if (num === 1) {
-          res.send({
-            message: "Log Entry was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete Log Entry with uuid=${uuid_creds}. Maybe Log Entry was not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete Log Entry with uuid=" + uuid_creds
+  const {uuid_creds} = req.params;
+  req.body.isActive = false;
+  req.body.isDeleted = true;
+  Logs.update(req.body, {
+    where: { uuid_creds: uuid_creds }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Log Entry was deleted successfully."
         });
+      } else {
+        res.send({
+          message: `Cannot delete Log Entry with uuid=${uuid_creds}. Maybe User was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error deleting Log Entry with uuid=" + uuid_creds
       });
+    });
 };
 
 // Delete all Log Entries from the database.
 exports.deleteAll = (req, res) => {
-  Logs.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} Log Entries were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all logs entries."
+  req.body.isActive = false;
+  req.body.isDeleted = true;
+  Logs.update(req.body)
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Log Entry was deleted successfully."
         });
+      } else {
+        res.send({
+          message: `Cannot delete Log Entry with uuid=${uuid_creds}. Maybe User was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error deleting Log Entry with uuid=" + uuid_creds
       });
+    });
 };
 

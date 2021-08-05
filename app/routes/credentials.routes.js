@@ -13,10 +13,10 @@ module.exports = app => {
     router.put("/:uuid_creds", credentials.update);
   
     // Delete a single User with uuid
-    router.delete("/:uuid_creds", credentials.delete);
+    router.put("/del/:uuid_creds", credentials.delete);
   
     // Delete all Users
-    router.delete("/", credentials.deleteAll);
+    router.put("/del/", credentials.deleteAll);
   
     app.use('/api/credentials', router);
   };

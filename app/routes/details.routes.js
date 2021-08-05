@@ -13,10 +13,10 @@ module.exports = app => {
     router.put("/:uuid_details", details.update);
   
     // Delete a single User's Details with uuid
-    router.delete("/:uuid_details", details.delete);
+    router.put("/del/:uuid_details", details.delete);
   
     // Delete all Users' Details
-    router.delete("/", details.deleteAll);
+    router.put("/del/", details.deleteAll);
   
     app.use('/api/details', router);
   };
