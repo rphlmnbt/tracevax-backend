@@ -30,12 +30,12 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Logs from the database.
+// Retrieve all IDs from the database.
 exports.findAll = (req, res) => {
     const {id} = req.query;
-    const condition = uuid_creds ? { uuid_creds: { [Op.like]: `%${uuid_creds}%` } } : null;
+    const condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
-    Logs.findAll({ where: condition })
+    ID.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
@@ -47,11 +47,11 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single Log Entry with an uuid
+// Find a single ID with an uuid
 exports.findOne = (req, res) => {
     const {uuid_creds} = req.params;
   
-    Logs.findByPk(uuid_creds)
+    ID.findByPk(uuid_creds)
       .then(data => {
         res.send(data);
       })
@@ -62,15 +62,15 @@ exports.findOne = (req, res) => {
       });
 };
 
-// Update a Log Entry by the uuid in the request
+// Update an ID by the uuid in the request
 exports.update = (req, res) => {
     const {uuid_creds} = req.params;
 
-    Logs.update(req.body, {
+    ID.update(req.body, {
       where: { uuid_creds: uuid_creds }
     })
       .then(num => {
-        if (num === 1) {
+        if (num == 1) {
           res.send({
             message: "Log Entry was updated successfully."
           });
@@ -92,7 +92,7 @@ exports.delete = (req, res) => {
   const {uuid_creds} = req.params;
   req.body.isActive = false;
   req.body.isDeleted = true;
-  Logs.update(req.body, {
+  ID.update(req.body, {
     where: { uuid_creds: uuid_creds }
   })
     .then(num => {
@@ -117,7 +117,7 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   req.body.isActive = false;
   req.body.isDeleted = true;
-  Logs.update(req.body)
+  ID.update(req.body)
     .then(num => {
       if (num == 1) {
         res.send({

@@ -10,13 +10,13 @@ module.exports = app => {
     router.get("/:uuid_details", details.findOne);
   
     // Update a single User's Details with uuid
-    router.put("/:uuid_details", details.update);
+    router.put("/update/:uuid_details", details.update);
   
     // Delete a single User's Details with uuid
-    router.put("/del/:uuid_details", details.delete);
+    router.put("/delete/:uuid_details", details.delete);
   
     // Delete all Users' Details
-    router.put("/del/", details.deleteAll);
+    router.put("/deleteall", details.deleteAll);
   
     app.use('/api/details', router);
   };

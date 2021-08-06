@@ -1,5 +1,5 @@
 module.exports = app => {
-    var idName;
+    const id = require("../controllers/id.controller.js");
     const multer  = require('multer')
     var storage = multer.diskStorage({
         destination: (req, file, cb) => {
@@ -14,7 +14,7 @@ module.exports = app => {
     var router = require("express").Router();
     
     router.post('/id', upload.single('id'), function (req, res) {
-      idName = req.body.uuid;
+      id.create
       res.send(console.log("Image Uploaded"))
     })
 
