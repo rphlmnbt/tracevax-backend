@@ -46,7 +46,7 @@ exports.update = (req, res) => {
       where: { uuid_creds: uuid_creds }
     })
       .then(num => {
-        if (num === 1) {
+        if (num == 1) {
           res.send({
             message: "User was updated successfully."
           });
@@ -65,43 +65,50 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified uuid_creds in the request
 exports.delete = (req, res) => {
-    const {uuid_creds} = req.params;
-  
-    Credentials.destroy({
-      where: { uuid_creds: uuid_creds }
-    })
-      .then(num => {
-        if (num === 1) {
-          res.send({
-            message: "User were deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete User with uuid=${uuid_creds}. Maybe User were not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete User with uuid=" + uuid_creds
+  const {uuid_creds} = req.params;
+  req.body.isActive = false;
+  req.body.isDeleted = true;
+  Credentials.update(req.body, {
+    where: { uuid_creds: uuid_creds }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "User was deleted successfully."
         });
+      } else {
+        res.send({
+          message: `Cannot delete User with uuid=${uuid_creds}. Maybe User was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error deleting User with uuid=" + uuid_creds
       });
+    });
 };
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
-  Credentials.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} Users were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all users."
+  req.body.isActive = false;
+  req.body.isDeleted = true;
+  Credentials.update(req.body)
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "User was deleted successfully."
         });
+      } else {
+        res.send({
+          message: `Cannot delete User with uuid=${uuid_creds}. Maybe User was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error deleting User with uuid=" + uuid_creds
       });
+    });
 };
 

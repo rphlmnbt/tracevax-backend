@@ -16,10 +16,10 @@ module.exports = app => {
     router.put("/:uuid_creds", logs.update);
   
     // Delete a single Log Entry with uuid
-    router.delete("/:uuid_creds", logs.delete);
+    router.put("/del/:uuid_creds", logs.delete);
   
     // Delete all Log Entries
-    router.delete("/", logs.deleteAll);
+    router.put("/del/", logs.deleteAll);
   
     app.use('/api/logs', router);
   };
