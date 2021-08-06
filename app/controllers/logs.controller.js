@@ -14,8 +14,8 @@ exports.create = (req, res) => {
 
     // Create a Log Entry
     const log = {
-        uuid_creds: req.body.uuid_creds,
-        location: req.body.location
+        location: req.body.location,
+        uuid_creds: req.body.uuid_creds
     };
     // Save Log Entry in the database
     Logs.create(log)
@@ -32,8 +32,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Logs from the database.
 exports.findAll = (req, res) => {
-    const {uuid_creds} = req.query;
-    const condition = uuid_creds ? { uuid_creds: { [Op.like]: `%${uuid_creds}%` } } : null;
+    const {id} = req.query;
+    const condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Logs.findAll({ where: condition })
       .then(data => {

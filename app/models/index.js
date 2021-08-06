@@ -25,6 +25,7 @@ db.logs = require("./logs.model.js")(sequelize, Sequelize);
 db.vaccinecard = require("./vaccinecard.model.js")(sequelize, Sequelize);
 db.id = require("./id.model.js")(sequelize, Sequelize);
 
+//Creds to Details - One to One
 db.credentials.hasOne(db.details, {
   foreignKey: {
     name: 'uuid_creds'
@@ -36,14 +37,39 @@ db.details.belongsTo(db.credentials, {
   }
 });
 
-db.id.hasOne(db.vaccinecard, {
+//Creds to ID - One to One
+db.credentials.hasOne(db.id, {
   foreignKey: {
-    name: 'id_IDCard'
+    name: 'uuid_creds'
+  }
+});
+db.id.belongsTo(db.credentials, {
+  foreignKey: {
+    name: 'uuid_creds'
   }
 })
-db.vaccinecard.belongsTo(db.id, {
+
+//Creds to Vaccnine Card - One to One
+db.credentials.hasOne(db.vaccinecard, {
   foreignKey: {
-    name: 'id_IDCard'
+    name: 'uuid_creds'
+  }
+});
+db.vaccinecard.belongsTo(db.credentials, {
+  foreignKey: {
+    name: 'uuid_creds'
+  }
+})
+
+//Creds to Logs - One to Many
+db.credentials.hasMany(db.logs, {
+  foreignKey: {
+    name: 'uuid_creds'
+  }
+});
+db.logs.belongsTo(db.credentials, {
+  foreignKey: {
+    name: 'uuid_creds'
   }
 })
 
