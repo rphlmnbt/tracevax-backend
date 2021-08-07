@@ -10,13 +10,13 @@ module.exports = app => {
     router.get("/:uuid_creds", credentials.findOne);
   
     // Update a single User with uuid
-    router.put("/:uuid_creds", credentials.update);
+    router.put("/update/:uuid_creds", credentials.update);
   
     // Delete a single User with uuid
-    router.put("/del/:uuid_creds", credentials.delete);
+    router.put("/delete/:uuid_creds", credentials.delete);
   
     // Delete all Users
-    router.put("/del/", credentials.deleteAll);
+    router.put("/deleteall", credentials.deleteAll);
   
     app.use('/api/credentials', router);
   };

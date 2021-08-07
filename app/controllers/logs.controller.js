@@ -14,8 +14,8 @@ exports.create = (req, res) => {
 
     // Create a Log Entry
     const log = {
-        uuid_creds: req.body.uuid_creds,
-        location: req.body.location
+        location: req.body.location,
+        uuid_creds: req.body.uuid_creds
     };
     // Save Log Entry in the database
     Logs.create(log)
@@ -32,8 +32,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Logs from the database.
 exports.findAll = (req, res) => {
-    const {uuid_creds} = req.query;
-    const condition = uuid_creds ? { uuid_creds: { [Op.like]: `%${uuid_creds}%` } } : null;
+    const {id} = req.query;
+    const condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Logs.findAll({ where: condition })
       .then(data => {
@@ -70,7 +70,7 @@ exports.update = (req, res) => {
       where: { uuid_creds: uuid_creds }
     })
       .then(num => {
-        if (num === 1) {
+        if (num == 1) {
           res.send({
             message: "Log Entry was updated successfully."
           });
@@ -117,21 +117,16 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   req.body.isActive = false;
   req.body.isDeleted = true;
-  Logs.update(req.body)
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Log Entry was deleted successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Log Entry with uuid=${uuid_creds}. Maybe User was not found or req.body is empty!`
-        });
-      }
+
+  Logs.update(req.body,{where: {  }})
+    .then(msg => {
+      res.send({
+        message: "Logs were deleted successfully."
+      });
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error deleting Log Entry with uuid=" + uuid_creds
+        message: "Error deleting Log Entries"
       });
     });
 };

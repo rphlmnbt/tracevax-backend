@@ -13,13 +13,13 @@ module.exports = app => {
     router.get("/:uuid_creds", logs.findOne);
   
     // Update a single Log Entry with uuid
-    router.put("/:uuid_creds", logs.update);
+    router.put("/update/:uuid_creds", logs.update);
   
     // Delete a single Log Entry with uuid
-    router.put("/del/:uuid_creds", logs.delete);
+    router.put("/delete/:uuid_creds", logs.delete);
   
     // Delete all Log Entries
-    router.put("/del/", logs.deleteAll);
+    router.put("/deleteall", logs.deleteAll);
   
     app.use('/api/logs', router);
   };
