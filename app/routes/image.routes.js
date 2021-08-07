@@ -1,12 +1,11 @@
 module.exports = app => {
-    const id = require("../controllers/id.controller.js");
     const multer  = require('multer')
     var storage = multer.diskStorage({
         destination: (req, file, cb) => {
           cb(null, 'public/images/' + file.fieldname)
         },
         filename: (req, file, cb) => {
-          cb(null, file.fieldname + '-' + req.body.uuid + Date.now() + ".jpg")
+          cb(null, file.fieldname + '-' + req.body.uuid + ".jpg")
         }
     });
     var upload = multer({storage: storage});
@@ -14,7 +13,6 @@ module.exports = app => {
     var router = require("express").Router();
     
     router.post('/id', upload.single('id'), function (req, res) {
-      id.create
       res.send(console.log("Image Uploaded"))
     })
 
