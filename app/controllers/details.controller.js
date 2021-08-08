@@ -1,5 +1,5 @@
 const db = require("../models");
-const Details = db.details;
+const Details = db.UserDetails;
 const Op = db.Sequelize.Op;
 
 // Retrieve all User's Details from the database.

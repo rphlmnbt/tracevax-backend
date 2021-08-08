@@ -1,5 +1,5 @@
 const db = require("../models");
-const Logs = db.logs;
+const Logs = db.Log;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Log Entry

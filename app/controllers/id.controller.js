@@ -1,5 +1,5 @@
 const db = require("../models");
-const ID = db.id;
+const ID = db.IdCard;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new ID

@@ -1,5 +1,5 @@
 const db = require("../models");
-const VaccineCard = db.vaccinecard;
+const VaccineCard = db.VaccineCard;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Vaccine Card
