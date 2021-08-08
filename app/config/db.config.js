@@ -14,8 +14,8 @@
 // };
 
 module.exports = {
-    HOST: "localhost",
-    USER: "root",
+    HOST: "Raph",
+    USER: "superuser",
     PASSWORD: "password",
     DB: "tracevax",
     dialect: "mysql",
