@@ -1,8 +1,16 @@
-const dbConfig = require("../config/db.config.js");
+'use strict';
 
-const Sequelize = require("sequelize");
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const dbConfig = require(__dirname + '/../config/db.config.js');
+const db = {};
+console.log(dbConfig);
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
+  port: dbConfig.PORT,
   dialect: dbConfig.dialect,
   operatorsAliases: false,
   dialectOptions: {
@@ -17,63 +25,24 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   }
 });
 
-const db = {};
+fs
+    .readdirSync(__dirname)
+    .filter(file => {
+      return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+    })
+    .forEach(file => {
+      const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+      db[model.name] = model;
+    });
 
-db.Sequelize = Sequelize;
+Object.keys(db).forEach(modelName => {
+  console.info(`[db] associate ${modelName}`);
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
 db.sequelize = sequelize;
-
-db.credentials = require("./credentials.model.js")(sequelize, Sequelize);
-db.details = require("./details.model.js")(sequelize, Sequelize);
-db.logs = require("./logs.model.js")(sequelize, Sequelize);
-db.vaccinecard = require("./vaccinecard.model.js")(sequelize, Sequelize);
-db.id = require("./id.model.js")(sequelize, Sequelize);
-
-//Creds to Details - One to One
-db.credentials.hasOne(db.details, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-});
-db.details.belongsTo(db.credentials, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-});
-
-//Creds to ID - One to One
-db.credentials.hasOne(db.id, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-});
-db.id.belongsTo(db.credentials, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-})
-
-//Creds to Vaccnine Card - One to One
-db.credentials.hasOne(db.vaccinecard, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-});
-db.vaccinecard.belongsTo(db.credentials, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-})
-
-//Creds to Logs - One to Many
-db.credentials.hasMany(db.logs, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-});
-db.logs.belongsTo(db.credentials, {
-  foreignKey: {
-    name: 'uuid_creds'
-  }
-})
+db.Sequelize = Sequelize;
 
 module.exports = db;

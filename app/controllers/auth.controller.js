@@ -1,22 +1,21 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const Credentials = db.credentials;
-const Details = db.details;
+const User = db.User;
+const UserDetails = db.UserDetails;
 
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const { credentials } = require("../models");
 
 exports.signup = (req, res) => {
     // Save User to Database
-    Credentials.create({
+    User.create({
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8)
     }).then(credentials => {
         // Save User Details to Database
-        Details.create({
+        UserDetails.create({
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             contact_number: req.body.contact_number,
@@ -37,10 +36,10 @@ exports.update = (req, res) => {
   if (req.body.password) {
     req.body.password = bcrypt.hashSync(req.body.password, 8)
   }
-  Credentials.update(req.body, {
+    User.update(req.body, {
     where: { uuid_creds: uuid_creds }
   }).then(credentials => {
-    Details.update(req.body, {
+    UserDetails.update(req.body, {
       where: { uuid_creds: uuid_creds}
     })
   })
@@ -57,7 +56,7 @@ exports.update = (req, res) => {
 }
 
 exports.signin = (req, res) => {
-  Credentials.findOne({
+  User.findOne({
     where: {
       email: req.body.email
     }
