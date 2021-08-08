@@ -5,11 +5,12 @@ const cors = require("cors");
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:3000"
-};
-
-app.use(cors(corsOptions));
+// var corsOptions = {
+//   origin: ["http://localhost:3000","http://localhost:19006"],
+//   optionsSuccessStatus: 200
+// };
+``
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
